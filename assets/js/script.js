@@ -31,7 +31,7 @@ var formSubmitHandler = function (event) {
 };
 
 var getCurrent = function (city) {
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
     console.log(queryURL);
 
     fetch(queryURL)
@@ -55,10 +55,11 @@ function displayCurrent(currentData)
 currentContainerEl.textContent = currentData.name
 var today = dayjs().format('MMMM D, YYYY');
 $('#date').text(today);
-currentIconEl.textContent = currentData.icon.value
 currentTempEl.textContent = currentData.main.temp
-currentHumidityEl.textContent = currentData
-
+console.log(currentTempEl);
+currentIconEl.textContent = currentData.weather[0].icon
+currentHumidityEl.textContent= currentData.main.humidity + '%'
+currentWindEl.textContent = currentData.wind.speed
 }
 
 
