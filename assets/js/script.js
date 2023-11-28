@@ -2,6 +2,13 @@ var APIKey = "84c3cfc8c419d24716f07138ab250bb5";
 var forecastContainerEl = document.querySelector('#forecast-container');
 var cityNameEl = document.querySelector('#city');
 var searchFormEl = document.querySelector('#search-form');
+var currentContainerEl = document.querySelector('#current-container');
+var currentIconEl = document.querySelector('#icon');
+var currentTempEl = document.querySelector('#temp');
+var currentHumidityEl = document.querySelector('#humidity');
+var currentWindEl = document.querySelector('#wind');
+
+
 
 
     
@@ -31,7 +38,8 @@ var getCurrent = function (city) {
     .then(function (response) {
         if (response.ok) {
         response.json().then(function (data) {
-            displayCurrent(data, city);
+            console.log(data);
+            displayCurrent(data);
           });
         } else {
           alert('Error: ' + response.statusText);
@@ -42,10 +50,16 @@ var getCurrent = function (city) {
       });
   };
     
-var displayCurrent
-    
+function displayCurrent(currentData)
+{    
+currentContainerEl.textContent = currentData.name
+var today = dayjs().format('MMMM D, YYYY');
+$('#date').text(today);
+currentIconEl.textContent = currentData.icon.value
+currentTempEl.textContent = currentData.main.temp
+currentHumidityEl.textContent = currentData
 
-    
+}
 
 
 
