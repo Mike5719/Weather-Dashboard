@@ -9,13 +9,20 @@
 </head>
 
 <body>
-    <div class=searchContainer></div>
+    <main class="flex-row justify-space-between">
+    <div class="searchContainer"></div>
             <h1 class="heading">Weather Dashboard</h1>
             <form id="search-form">
                 <input id="city">Search for a city:</product>
                 <button class="submit">Search</button>
             </form>
     </div>
+
+    <div class="col-12 col-md-8">
+        <h2 class="forecast">5-Day Forecast:</h2>
+        <div id="forecast-container" class="row"></div>
+      </div>
+    </main>
 
 <script src="./assets/js/script.js"></script>
 </body>
