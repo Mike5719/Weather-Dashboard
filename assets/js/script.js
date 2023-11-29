@@ -2,7 +2,7 @@ var APIKey = "84c3cfc8c419d24716f07138ab250bb5";
 var forecastContainerEl = document.querySelector('#forecast-container');
 var cityNameEl = document.querySelector('#city');
 var searchFormEl = document.querySelector('#search-form');
-var currentContainerEl = document.querySelector('#current-container');
+var currentCityEl = document.querySelector('#current-city');
 var currentIconEl = document.querySelector('#icon');
 var currentTempEl = document.querySelector('#temp');
 var currentHumidityEl = document.querySelector('#humidity');
@@ -17,8 +17,7 @@ var formSubmitHandler = function (event) {
     event.preventDefault();
 
     var city = document.querySelector('#city').value.trim();
-    // console.log(city);
-    // console.log(queryURL);
+   
     
     if (city) {
         getCurrent(city);
@@ -52,18 +51,30 @@ var getCurrent = function (city) {
     
 function displayCurrent(currentData)
 {    
-currentContainerEl.textContent = currentData.name
+  
+currentCityEl.textContent = 'City: ' + currentData.name
 var today = dayjs().format('MMMM D, YYYY');
 $('#date').text(today);
-currentTempEl.textContent = currentData.main.temp
+var kelvin = currentData.main.temp;
+kelvin = Math.floor(kelvin);
+console.log(kelvin);
+currentTempEl.textContent = kelvin - 273;
 console.log(currentTempEl);
+var metersPerSecondSpeed = currentData.wind.speed;
+var kilometersPerHourSpeed = metersPerSecondToKilometersPerHour(metersPerSecondSpeed);
+kilometersPerHourSpeed = Math.floor(kilometersPerHourSpeed);
+console.log(kilometersPerHourSpeed);
+currentWindEl.textContent = kilometersPerHourSpeed + ' km/h'
 currentIconEl.textContent = currentData.weather[0].icon
 currentHumidityEl.textContent= currentData.main.humidity + '%'
-currentWindEl.textContent = currentData.wind.speed
+
+
 }
 
 
 
-
-
 searchFormEl.addEventListener('submit', formSubmitHandler);
+
+function metersPerSecondToKilometersPerHour(metersPerSecond) {
+  return metersPerSecond * 3.6;
+}
