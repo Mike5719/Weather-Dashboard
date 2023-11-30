@@ -1,5 +1,5 @@
 var APIKey = "84c3cfc8c419d24716f07138ab250bb5";
-var forecastContainerEl = document.querySelector('#forecast-container');
+var forecastCityEl = document.querySelector('#forecast-city');
 var cityNameEl = document.querySelector('#city');
 var searchFormEl = document.querySelector('#search-form');
 var currentCityEl = document.querySelector('#current-city');
@@ -7,7 +7,10 @@ var currentIconEl = document.querySelector('#icon');
 var currentTempEl = document.querySelector('#temp');
 var currentHumidityEl = document.querySelector('#humidity');
 var currentWindEl = document.querySelector('#wind');
-
+var forecastIconEl = document.querySelector('#iconF');
+var forecastTempEl = document.querySelector('#tempF');
+var forecastHumidityEl = document.querySelector('#humidityF');
+var forecastWindEl = document.querySelector('#windF');
 
 
 
@@ -21,7 +24,7 @@ var formSubmitHandler = function (event) {
     
     if (city) {
         getCurrent(city);
-        forecastContainerEl.textContent = '';
+        currentCityEl.textContent = '';
         cityNameEl.value = '';
     } else {
         alert('Please enter a valid city name');
@@ -39,6 +42,11 @@ var getCurrent = function (city) {
         response.json().then(function (data) {
             console.log(data);
             displayCurrent(data);
+            var lat = data.coord.lat;
+            console.log(lat);
+            var lon = data.coord.lon;
+            console.log(lon);
+            getForecast(lat,lon);
           });
         } else {
           alert('Error: ' + response.statusText);
@@ -68,8 +76,52 @@ currentWindEl.textContent = kilometersPerHourSpeed + ' km/h'
 currentIconEl.textContent = currentData.weather[0].icon
 currentHumidityEl.textContent= currentData.main.humidity + '%'
 
-
 }
+
+var getForecast = function (lat,lon) {
+  var queryURLforecast = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
+  console.log(queryURLforecast);
+
+  fetch(queryURLforecast)
+  .then(function (response) {
+      if (response.ok) {
+      response.json().then(function (data) {
+          console.log(data);
+          for (var i = 1; i < 6; i++) {
+            var forecastIcon = document.createElement('p');
+            var forecastTemp = document.createElement('p');
+            var forecastHumidity = document.createElement('p');
+            var forecastWind = document.createElement('p');
+
+            forecastIcon.textContent = data.list[i].weather[0].icon;
+            var forecastkelvin = data.list[i].main.temp;
+            console.log(forecastkelvin);
+            forecastkelvin = Math.floor(forecastkelvin);
+            forecastTemp.textContent = forecastkelvin - 273;
+            forecastHumidity.textContent = data.list[i].main.humidity;
+            metersPerSecondSpeed = data.list[i].wind.speed;
+            kilometersPerHourSpeed = metersPerSecondToKilometersPerHour(metersPerSecondSpeed);
+            kilometersPerHourSpeed = Math.floor(kilometersPerHourSpeed);
+            forecastWind.textContent = kilometersPerHourSpeed;
+
+            forecastIconEl.append(forecastIcon);
+            forecastTempEl.append(forecastTemp);
+            forecastHumidityEl.append(forecastHumidity);
+            forecastWindEl.append(forecastWind);
+          }
+
+
+        });
+      } else {
+        alert('Error: ' + response.statusText);
+      }
+    })
+    .catch(function (error) {
+      alert('Unable to connect to OpenWeather');
+    });
+};
+
+
 
 
 
