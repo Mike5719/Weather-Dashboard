@@ -2,16 +2,17 @@ var APIKey = "84c3cfc8c419d24716f07138ab250bb5";
 var forecastCityEl = document.querySelector('#forecast-city');
 var cityNameEl = document.querySelector('#city');
 var searchFormEl = document.querySelector('#search-form');
-var currentCityEl = document.querySelector('#current-city');
-var currentIconEl = document.querySelector('#icon');
-var currentTempEl = document.querySelector('#temp');
-var currentHumidityEl = document.querySelector('#humidity');
-var currentWindEl = document.querySelector('#wind');
-var forecastIconEl = document.querySelector('#iconF');
-var forecastTempEl = document.querySelector('#tempF');
-var forecastHumidityEl = document.querySelector('#humidityF');
-var forecastWindEl = document.querySelector('#windF');
+//var currentCityEl = document.querySelector('#current-city');
+// var currentIconEl = document.querySelector('#icon');
+// var currentTempEl = document.querySelector('#temp');
+// var currentHumidityEl = document.querySelector('#humidity');
+// var currentWindEl = document.querySelector('#wind');
+// var forecastIconEl = document.querySelector('#iconF');
+// var forecastTempEl = document.querySelector('#tempF');
+// var forecastHumidityEl = document.querySelector('#humidityF');
+// var forecastWindEl = document.querySelector('#windF');
 var forecastContainerEl = document.querySelector('#forecastContainer');
+var currentContainerEl = document.querySelector('#currentContainer');
 
 
 
@@ -25,8 +26,8 @@ var formSubmitHandler = function (event) {
     
     if (city) {
         getCurrent(city);
-        currentCityEl.textContent = '';
-        cityNameEl.value = '';
+        //currentCityEl.textContent = '';
+        //cityNameEl.value = '';
     } else {
         alert('Please enter a valid city name');
     }
@@ -61,22 +62,37 @@ var getCurrent = function (city) {
 function displayCurrent(currentData)
 {    
   
-currentCityEl.textContent = 'City: ' + currentData.name
+var currentEl = document.createElement('div');
+currentEl.setAttribute("id", "currentcard");
+var currentCityEl = document.createElement('p');
+currentCityEl.textContent =`City: ${currentData.name}`;
+//currentCityEl.textContent = 'City: ' + currentData.name
+//current date
 var today = dayjs().format('MMMM D, YYYY');
-$('#date').text(today);
-var kelvin = currentData.main.temp;
-kelvin = Math.floor(kelvin);
-console.log(kelvin);
-currentTempEl.textContent = kelvin - 273;
-console.log(currentTempEl);
-var metersPerSecondSpeed = currentData.wind.speed;
-var kilometersPerHourSpeed = metersPerSecondToKilometersPerHour(metersPerSecondSpeed);
-kilometersPerHourSpeed = Math.floor(kilometersPerHourSpeed);
-console.log(kilometersPerHourSpeed);
-currentWindEl.textContent = kilometersPerHourSpeed + ' km/h'
-currentIconEl.textContent = currentData.weather[0].icon
-currentHumidityEl.textContent= currentData.main.humidity + '%'
-
+var currentDateEl = document.createElement('p');
+currentDateEl.textContent = $('#date').text(today);
+//current icon
+var currentIconURL = `https://openweathermap.org/img/wn/${currentData.weather[0].icon}@2x.png`;
+var currentIconEl =document.createElement('img');
+currentIconEl.setAttribute("class", "currentIcon");
+currentIconEl.setAttribute("src", currentIconURL);
+//current temperature
+var currentTempEl = document.createElement('p');
+var currentkelvin = currentData.main.temp;
+currentkelvin = Math.floor(currentkelvin);
+currentTempEl.textContent = `Temperature: ${currentkelvin - 273} \u00B0 C`;
+//humidity
+var currentHumidityEl = document.createElement('p');
+currentHumidityEl.textContent = `Humidity: ${currentData.main.humidity} %`;
+ //wind speed
+ var currentWindEl = document.createElement('p');
+ var metersPerSecondSpeed = currentData.wind.speed;
+ var kilometersPerHourSpeed = Math.floor(metersPerSecondToKilometersPerHour(metersPerSecondSpeed));
+ currentWindEl.textContent = `Wind Speed: ${kilometersPerHourSpeed} km/h`;
+//append current weather elements to card
+currentEl.append(currentDateEl, currentCityEl, currentIconEl, currentTempEl, currentHumidityEl, currentWindEl);
+//append card to container
+currentContainerEl.append(currentEl);
 }
 
 var getForecast = function (lat,lon) {
@@ -88,10 +104,10 @@ var getForecast = function (lat,lon) {
       if (response.ok) {
       response.json().then(function (data) {
           console.log(data);
-          for (var i = 0; i < data.list.length; i+=5) {
-            // if (i>20) {
-            //   continue
-            // }
+          for (var i = 0; i < data.list.length; i+=7) {
+            if (i>34) {
+              continue
+            }
             var forecastEl = document.createElement('div');
             forecastEl.setAttribute("class", "forecastcard");
             //forecastcard date
@@ -115,7 +131,6 @@ var getForecast = function (lat,lon) {
             var forecastWindEl = document.createElement('p');
             var metersPerSecondSpeed = data.list[i].wind.speed;
             var kilometersPerHourSpeed = Math.floor(metersPerSecondToKilometersPerHour(metersPerSecondSpeed));
-
             forecastWindEl.textContent = `Wind Speed: ${kilometersPerHourSpeed} km/h`;
             //append forecast elements to card
             forecastEl.append(forecastDateEl, forecastIconEl, forecastTempEl, forecastHumidityEl, forecastWindEl);
@@ -144,3 +159,19 @@ searchFormEl.addEventListener('submit', formSubmitHandler);
 function metersPerSecondToKilometersPerHour(metersPerSecond) {
   return metersPerSecond * 3.6;
 }
+
+//currentCityEl.textContent = 'City: ' + currentData.name
+// var today = dayjs().format('MMMM D, YYYY');
+// $('#date').text(today);
+// var kelvin = currentData.main.temp;
+// kelvin = Math.floor(kelvin);
+// console.log(kelvin);
+// currentTempEl.textContent = kelvin - 273;
+// console.log(currentTempEl);
+// var metersPerSecondSpeed = currentData.wind.speed;
+// var kilometersPerHourSpeed = metersPerSecondToKilometersPerHour(metersPerSecondSpeed);
+// kilometersPerHourSpeed = Math.floor(kilometersPerHourSpeed);
+// console.log(kilometersPerHourSpeed);
+// currentWindEl.textContent = kilometersPerHourSpeed + ' km/h'
+// currentIconEl.textContent = `https://openweathermap.org/img/wn/${currentData.weather.icon}@2x.png`;
+// currentHumidityEl.textContent= currentData.main.humidity + '%'
