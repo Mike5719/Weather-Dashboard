@@ -69,8 +69,8 @@ currentCityEl.textContent =`City: ${currentData.name}`;
 //currentCityEl.textContent = 'City: ' + currentData.name
 //current date
 var today = dayjs().format('MMMM D, YYYY');
-var currentDateEl = document.createElement('p');
-currentDateEl.textContent = $('#date').text(today);
+//var currentDateEl = document.createElement('p');
+$('#currentContainer').text(today);
 //current icon
 var currentIconURL = `https://openweathermap.org/img/wn/${currentData.weather[0].icon}@2x.png`;
 var currentIconEl =document.createElement('img');
@@ -90,7 +90,7 @@ currentHumidityEl.textContent = `Humidity: ${currentData.main.humidity} %`;
  var kilometersPerHourSpeed = Math.floor(metersPerSecondToKilometersPerHour(metersPerSecondSpeed));
  currentWindEl.textContent = `Wind Speed: ${kilometersPerHourSpeed} km/h`;
 //append current weather elements to card
-currentEl.append(currentDateEl, currentCityEl, currentIconEl, currentTempEl, currentHumidityEl, currentWindEl);
+currentEl.append(currentCityEl, currentIconEl, currentTempEl, currentHumidityEl, currentWindEl);
 //append card to container
 currentContainerEl.append(currentEl);
 }

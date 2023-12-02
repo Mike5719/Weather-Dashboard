@@ -5,6 +5,14 @@
 .forecast {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.currentbox {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 25px 1px;
 }
 
 .forecastcard {
