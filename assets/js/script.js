@@ -11,6 +11,7 @@ var forecastIconEl = document.querySelector('#iconF');
 var forecastTempEl = document.querySelector('#tempF');
 var forecastHumidityEl = document.querySelector('#humidityF');
 var forecastWindEl = document.querySelector('#windF');
+var forecastContainerEl = document.querySelector('#forecastContainer');
 
 
 
@@ -87,27 +88,40 @@ var getForecast = function (lat,lon) {
       if (response.ok) {
       response.json().then(function (data) {
           console.log(data);
-          for (var i = 1; i < 6; i++) {
-            var forecastIcon = document.createElement('p');
-            var forecastTemp = document.createElement('p');
-            var forecastHumidity = document.createElement('p');
-            var forecastWind = document.createElement('p');
-
-            forecastIcon.textContent = data.list[i].weather[0].icon;
+          for (var i = 0; i < data.list.length; i+=5) {
+            // if (i>20) {
+            //   continue
+            // }
+            var forecastEl = document.createElement('div');
+            forecastEl.setAttribute("class", "forecastcard");
+            //forecastcard date
+            var forecastDateEl = document.createElement('p');
+            forecastDateEl.textContent = `Date: ${data.list[i].dt_txt}`;
+            //forecastcard icon
+            var forecastIconURL = `https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png`;
+            var forecastIconEl =document.createElement('img');
+            forecastIconEl.setAttribute("class", "forecastIcon");
+            forecastIconEl.setAttribute("src", forecastIconURL);
+            //temperature
+            var forecastTempEl = document.createElement('p');
             var forecastkelvin = data.list[i].main.temp;
-            console.log(forecastkelvin);
             forecastkelvin = Math.floor(forecastkelvin);
-            forecastTemp.textContent = forecastkelvin - 273;
-            forecastHumidity.textContent = data.list[i].main.humidity;
-            metersPerSecondSpeed = data.list[i].wind.speed;
-            kilometersPerHourSpeed = metersPerSecondToKilometersPerHour(metersPerSecondSpeed);
-            kilometersPerHourSpeed = Math.floor(kilometersPerHourSpeed);
-            forecastWind.textContent = kilometersPerHourSpeed;
+            forecastTempEl.textContent = `Temperature: ${forecastkelvin - 273} \u00B0 C`;
+           
+            //humidity
+            var forecastHumidityEl = document.createElement('p');
+            forecastHumidityEl.textContent = `Humidity: ${data.list[i].main.humidity} %`;
+            //wind speed
+            var forecastWindEl = document.createElement('p');
+            var metersPerSecondSpeed = data.list[i].wind.speed;
+            var kilometersPerHourSpeed = Math.floor(metersPerSecondToKilometersPerHour(metersPerSecondSpeed));
 
-            forecastIconEl.append(forecastIcon);
-            forecastTempEl.append(forecastTemp);
-            forecastHumidityEl.append(forecastHumidity);
-            forecastWindEl.append(forecastWind);
+            forecastWindEl.textContent = `Wind Speed: ${kilometersPerHourSpeed} km/h`;
+            //append forecast elements to card
+            forecastEl.append(forecastDateEl, forecastIconEl, forecastTempEl, forecastHumidityEl, forecastWindEl);
+            //append card to container
+            forecastContainerEl.append(forecastEl);
+           
           }
 
 

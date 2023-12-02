@@ -1,0 +1,14 @@
+.forecastTitle {
+
+} 
+
+.forecast {
+    display: flex;
+    justify-content: space-between;
+}
+
+.forecastcard {
+    background-color: blue;
+    color: antiquewhite;
+    padding: 10px 60px;
+}

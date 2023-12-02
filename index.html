@@ -18,20 +18,22 @@
   crossorigin="anonymous"
 ></script>
 
+  <link rel="stylesheet" href="./assets/css/style.css">
+
    
 </head>
 
 <body>
     <main class="flex-row justify-space-between">
-    <div class="searchContainer"></div>
-            <h1 class="heading">Weather Dashboard</h1>
-            <form id="search-form">
-                <input id="city">Search for a city:</product>
-                <button class="submit">Search</button>
-            </form>
-    </div>
+      <div class="searchContainer"></div>
+        <h1 class="heading">Weather Dashboard</h1>
+        <form id="search-form">
+            <input id="city">Search for a city:</product>
+            <button class="submit">Search</button>
+        </form>
+      </div>
 
-    <div class="col-12 col-md-8">
+      <div class="col-12 col-md-8">
         <h2 class="forecast">Current Weather:</h2>
         <div id="current-city" class="row"></div>
         <div>Date: <span id="date"></span></div>
@@ -41,15 +43,14 @@
         <div>Wind Speed: <span id="wind"></span></div>
       </div>
 
-    <div class="col-12 col-md-8">
-        <h2 class="forecast">5-Day Forecast:</h2>
-        <div id="forecast-city" class="row"></div>
-        <div>Date: <span id="date"></span></div>
-        <div id="iconF"></div>
-        <div>Temperature: <span id="tempF"></span> degrees celsius</div>
-        <div>Humidity: <span id="humidityF"></span></div>
-        <div>Wind Speed: <span id="windF"></span></div>
-      </div>
+      <div class="col-12 col-md-8">
+        <h2 class="forecastTitle">5-Day Forecast:</h2> 
+        <div id="forecastContainer" class="forecast">
+          
+          
+        </div>
+      </div>  
+      
     </main>
 
     
@@ -58,3 +59,13 @@
 </body>
 
 </html>
+
+<!-- <div class="col-12 col-md-8">
+  <h2 class="forecast">5-Day Forecast:</h2>
+  <div id="forecast-city" class="row"></div>
+  <div>Date: <span id="date"></span></div>
+  <div id="iconF"></div>
+  <div>Temperature: <span id="tempF"></span> degrees celsius</div>
+  <div>Humidity: <span id="humidityF"></span></div>
+  <div>Wind Speed: <span id="windF"></span></div>
+</div> -->
