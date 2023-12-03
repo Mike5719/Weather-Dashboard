@@ -16,6 +16,7 @@ var currentContainerEl = document.querySelector('#currentContainer');
 
 
 
+
     
 
 var formSubmitHandler = function (event) {
@@ -28,6 +29,17 @@ var formSubmitHandler = function (event) {
         getCurrent(city);
         //currentCityEl.textContent = '';
         //cityNameEl.value = '';
+        console.log(city);
+        localStorage.setItem('search-history', JSON.stringify(city));
+        var currentCity = JSON.parse(localStorage.getItem("search-history"));
+        console.log(currentCity);
+        var buttonEl = document.createElement('button');
+        buttonEl.textContent = `${currentCity}`;
+        cityNameEl.append(buttonEl);
+
+
+
+
     } else {
         alert('Please enter a valid city name');
     }
