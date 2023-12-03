@@ -13,6 +13,9 @@ var searchFormEl = document.querySelector('#search-form');
 // var forecastWindEl = document.querySelector('#windF');
 var forecastContainerEl = document.querySelector('#forecastContainer');
 var currentContainerEl = document.querySelector('#currentContainer');
+var searchList = document.querySelector('#search-list');
+
+var listWeatherCities = [];
 
 
 
@@ -30,25 +33,36 @@ var formSubmitHandler = function (event) {
         //currentCityEl.textContent = '';
         //cityNameEl.value = '';
         console.log(city);
-        localStorage.setItem('search-history', JSON.stringify(city));
-        var currentCity = JSON.parse(localStorage.getItem("search-history"));
-        console.log(currentCity);
-        var buttonEl = document.createElement('button');
-        buttonEl.textContent = `${currentCity}`;
-        cityNameEl.append(buttonEl);
+        listWeatherCities.push(city);
+        localStorage.setItem("listWeatherCities", JSON.stringify(listWeatherCities));
 
+        searchList.innerHTML = "";
+        
+      //create list of searched cities and display on screen
+        for (var i = 0; i < listWeatherCities.length; i++) {
 
+          var li = document.createElement("li");
+          console.log(city);
+          li.setAttribute("data-index", i);
 
+          var button = document.createElement("button");
+          button.textContent = `${listWeatherCities[i]}`;
 
+          li.appendChild(button);
+          searchList.appendChild(li);
+        }
+
+      
     } else {
         alert('Please enter a valid city name');
     }
 
 };
-
+// fetch current weather data for city name entered
 var getCurrent = function (city) {
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
     console.log(queryURL);
+    cityNameEl.value = "";
 
     fetch(queryURL)
     .then(function (response) {
@@ -62,9 +76,10 @@ var getCurrent = function (city) {
             console.log(lon);
             getForecast(lat,lon);
           });
-        } else {
-          alert('Error: ' + response.statusText);
-        }
+        } 
+        else {
+           alert('Error: ' + response.statusText);
+         }
       })
       .catch(function (error) {
         alert('Unable to connect to OpenWeather');
@@ -108,6 +123,7 @@ currentContainerEl.append(currentEl);
 }
 
 var getForecast = function (lat,lon) {
+  // fetch forecast weather data for city name entered
   var queryURLforecast = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
   console.log(queryURLforecast);
 
@@ -161,6 +177,25 @@ var getForecast = function (lat,lon) {
       alert('Unable to connect to OpenWeather');
     });
 };
+
+//get stored cities list
+var storedlistWeatherCities = JSON.parse(localStorage.getItem("listWeatherCities"));
+console.log(storedlistWeatherCities);
+searchList.addEventListener("click", function(event) {
+  var element = event.target;
+
+  if(element.matches("button") === true) {
+    var index = element.parentElement.getAttribute("data-index");
+    console.log(index);
+  }
+
+  city = listWeatherCities[index];
+  console.log(city);
+  document.getElementById('#forecastContainer').innerHTML ="";
+  getCurrent(city)
+  
+  
+})
 
 
 
