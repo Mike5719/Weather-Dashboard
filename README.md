@@ -14,6 +14,7 @@ Credits:
     Tutor Jeremy Jones assisted me with the JavaScript coding to dynamically create and populate elements for the 5-day forecast section.
 
   Deployed Page Link:
+  https://mike5719.github.io/Weather-Dashboard/
     
 
 License:
